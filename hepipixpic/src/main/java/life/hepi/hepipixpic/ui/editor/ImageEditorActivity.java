@@ -16,6 +16,7 @@ import com.yalantis.ucrop.UCropFragmentCallback;
 import java.io.File;
 
 import life.hepi.hepipixpic.BaseActivity;
+import life.hepi.hepipixpic.PixPicCreator;
 import life.hepi.hepipixpic.R;
 
 public class ImageEditorActivity extends BaseActivity implements UCropFragmentCallback {

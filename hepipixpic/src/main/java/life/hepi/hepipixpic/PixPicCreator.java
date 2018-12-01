@@ -1,7 +1,12 @@
 package life.hepi.hepipixpic;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import life.hepi.hepipixpic.ui.picker.ImagePickerActivity;
 
 import java.util.ArrayList;
 
@@ -196,28 +201,28 @@ public final class PixPicCreator implements BaseProperty, CustomizationProperty 
         return this;
     }
 
-//    public void startAlbum() {
-//        Context context = null;
-//        Activity activity = fishBun.activity.get();
-//        Fragment fragment = fishBun.fragment.get();
-//        if (activity != null)
-//            context = activity;
-//        else if (fragment != null)
-//            context = fragment.getActivity();
-//        else
-//            try {
-//                throw new Exception("Activity or Fragment Null");
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//        fishton.setDefaultMessage(context);
-//        fishton.setMenuTextColor();
-//        fishton.setDefaultDimen(context);
-//
-//        Intent i = new Intent(context, AlbumActivity.class);
-//        if (activity != null) activity.startActivityForResult(i, requestCode);
-//        else if (fragment != null) fragment.startActivityForResult(i, requestCode);
-//
-//    }
+    public void startPicker() {
+        Context context = null;
+        Activity activity = fishBun.activity.get();
+        Fragment fragment = fishBun.fragment.get();
+        if (activity != null)
+            context = activity;
+        else if (fragment != null)
+            context = fragment.getActivity();
+        else
+            try {
+                throw new Exception("Activity or Fragment Null");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        fishton.setDefaultMessage(context);
+        fishton.setMenuTextColor();
+        fishton.setDefaultDimen(context);
+
+        Intent i = new Intent(context, ImagePickerActivity.class);
+        if (activity != null) activity.startActivityForResult(i, requestCode);
+        else if (fragment != null) fragment.startActivityForResult(i, requestCode);
+
+    }
 }
