@@ -201,6 +201,12 @@ public final class PixPicCreator implements BaseProperty, CustomizationProperty 
         return this;
     }
 
+    @Override
+    public PixPicCreator setIsEditorEnable(boolean isEnable) {
+        fishton.isEditorEnable = isEnable;
+        return this;
+    }
+
     public void startPicker() {
         Context context = null;
         Activity activity = fishBun.activity.get();

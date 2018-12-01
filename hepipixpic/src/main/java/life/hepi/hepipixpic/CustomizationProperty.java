@@ -43,4 +43,6 @@ interface CustomizationProperty {
     PixPicCreator setMenuTextColor(int color);
 
     PixPicCreator setIsUseDetailView(boolean isUse);
+
+    PixPicCreator setIsEditorEnable(boolean isEnable);
 }
