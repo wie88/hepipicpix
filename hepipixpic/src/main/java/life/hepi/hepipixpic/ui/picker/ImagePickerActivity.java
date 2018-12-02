@@ -1,11 +1,14 @@
 package life.hepi.hepipixpic.ui.picker;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,13 +17,14 @@ import com.yalantis.ucrop.UCrop;
 import life.hepi.hepipixpic.BaseActivity;
 import life.hepi.hepipixpic.R;
 import life.hepi.hepipixpic.adapter.view.ViewPagerAdapter;
+import life.hepi.hepipixpic.permission.PermissionCheck;
 
 public class ImagePickerActivity extends BaseActivity implements View.OnClickListener {
 
     ImagePickerFragment imagePickerFragment;
     ImagePickerCameraFragment imagePickerCameraFragment;
 
-    public static final int IMAGE_EDITOR_ACTIVITY = 1;
+    public static final int IMAGE_EDITOR_ACTIVITY = 123;
 
     ViewPager viewPager;
 
@@ -37,6 +41,14 @@ public class ImagePickerActivity extends BaseActivity implements View.OnClickLis
         camera = findViewById(R.id.camera);
 
         initViewPager();
+
+        getSupportActionBar().setHomeButtonEnabled(Boolean.TRUE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(Boolean.TRUE);
+        if(pixton.drawableHomeAsUpIndicator != null)
+        {
+            getSupportActionBar().setHomeAsUpIndicator(pixton.drawableHomeAsUpIndicator);
+        }
+        getSupportActionBar().setTitle(pixton.titleActionBar);
     }
 
     @Override
@@ -125,5 +137,45 @@ public class ImagePickerActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
         }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 23: {
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        imagePickerCameraFragment.init();
+                        // permission was granted, yay! do the
+                        // calendar task you need to do.
+                    } else {
+                        new PermissionCheck(this).showPermissionDialog();
+                        finish();
+                    }
+                }
+            }
+            case 28: {
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        imagePickerFragment.init();
+                        // permission was granted, yay! do the
+                        // calendar task you need to do.
+                    } else {
+                        new PermissionCheck(this).showPermissionDialog();
+                        finish();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

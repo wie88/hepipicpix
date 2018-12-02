@@ -2,6 +2,7 @@
     <string name="app_name">HepiPixPic</string>
 
     <string name="album">Album</string>
+    <string name="pick_image">Pilih Gambar</string>
     <string name="all_media">Semua Media</string>
 
     <string name="msg_no_selected">No Selected</string>

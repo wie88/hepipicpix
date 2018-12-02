@@ -1,4 +1,4 @@
-package life.hepi.hepipixpic
+package life.hepi.hepipixpicdemo
 
 import org.junit.Test
 

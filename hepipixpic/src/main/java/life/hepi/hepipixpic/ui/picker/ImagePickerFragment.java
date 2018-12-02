@@ -78,36 +78,9 @@ public class ImagePickerFragment extends BaseFragment {
         });
     }
 
-    //
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == define.ENTER_DETAIL_REQUEST_CODE) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                if (pixton.isAutomaticClose && pixton.selectedImages.size() == pixton.maxCount)
-//                    finishActivity();
-//                refreshThumb();
-//            }
-//        }
-//    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 28: {
-                if (grantResults.length > 0) {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        viewModel.displayImage(album.bucketId, pixton.isExceptGif);
-                        // permission was granted, yay! do the
-                        // calendar task you need to do.
-                    } else {
-                        new PermissionCheck(getContext()).showPermissionDialog();
-                        getActivity().finish();
-                    }
-                }
-            }
-
-        }
+    public void init()
+    {
+        viewModel.displayImage(album.bucketId, pixton.isExceptGif);
     }
 
     private void initView() {
@@ -141,20 +114,5 @@ public class ImagePickerFragment extends BaseFragment {
             }
         }
     }
-//
-//    void transImageFinish(int position) {
-//        Define define = new Define();
-//        Intent i = new Intent();
-//        i.putParcelableArrayListExtra(define.INTENT_ADD_PATH, pickerController.getAddImagePaths());
-//        i.putExtra(define.INTENT_POSITION, position);
-//        getActivity().setResult(define.TRANS_IMAGES_RESULT_CODE, i);
-//        getActivity().finish();
-//    }
-//
-//    public void finishActivity() {
-//        Intent i = new Intent();
-//        getActivity().setResult(Activity.RESULT_OK, i);
-//        getActivity().finish();
-//    }
 
 }

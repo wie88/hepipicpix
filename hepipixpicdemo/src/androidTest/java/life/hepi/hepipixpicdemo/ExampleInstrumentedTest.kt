@@ -1,4 +1,4 @@
-package life.hepi.hepipixpic
+package life.hepi.hepipixpicdemo
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("life.hepi.hepipixpic", appContext.packageName)
+        assertEquals("life.hepi.hepipixpicdemo", appContext.packageName)
     }
 }

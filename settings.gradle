@@ -1,1 +1,1 @@
-include ':app', ':hepipixpic'
+include ':hepipixpic', ':hepipixpicdemo'

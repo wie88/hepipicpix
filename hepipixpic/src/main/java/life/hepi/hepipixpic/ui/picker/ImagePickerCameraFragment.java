@@ -2,9 +2,11 @@ package life.hepi.hepipixpic.ui.picker;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import life.hepi.hepipixpic.BaseFragment;
 import life.hepi.hepipixpic.R;
+import life.hepi.hepipixpic.permission.PermissionCheck;
 import life.hepi.hepipixpic.ui.editor.ImageEditorActivity;
 
 import static io.fotoapparat.selector.AspectRatioSelectorsKt.standardRatio;
@@ -78,10 +81,18 @@ public class ImagePickerCameraFragment extends BaseFragment {
         shutterButton = view.findViewById(R.id.shutter_button);
         switchButton = view.findViewById(R.id.switch_button);
 
-        initCamera();
-        initButtons();
+        PermissionCheck permissionCheck = new PermissionCheck(getContext());
+        if(permissionCheck.CheckCameraPermission()) {
+            initCamera();
+            initButtons();
+        }
 
         return view;
+    }
+
+    public void init() {
+        initCamera();
+        initButtons();
     }
 
     private void initButtons()
@@ -108,8 +119,9 @@ public class ImagePickerCameraFragment extends BaseFragment {
                                     file.setReadable(Boolean.TRUE);
                                     Intent intent =  new Intent();
                                     intent.setClass(getContext(), ImageEditorActivity.class);
+                                    intent.putExtra("TYPE","CAMERA");
                                     intent.putExtra("IMAGE", new Uri.Builder().path(file.getPath()).build());
-                                    getActivity().startActivity(intent);
+                                    getActivity().startActivityForResult(intent,123);
                                 }
                                 catch (IOException ex) {
 
@@ -208,19 +220,32 @@ public class ImagePickerCameraFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        fotoapparat.start();
+        if(fotoapparat != null) {
+            fotoapparat.start();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        fotoapparat.start();
+        if(fotoapparat != null) {
+            fotoapparat.start();
+        }
     }
 
     @Override
     public void onStop() {
-        fotoapparat.stop();
+        if(fotoapparat != null) {
+            fotoapparat.stop();
+        }
         super.onStop();
     }
 
+    @Override
+    public void onPause() {
+        if(fotoapparat != null) {
+            fotoapparat.stop();
+        }
+        super.onPause();
+    }
 }

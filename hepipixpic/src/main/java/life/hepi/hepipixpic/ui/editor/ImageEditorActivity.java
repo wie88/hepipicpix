@@ -1,8 +1,10 @@
 package life.hepi.hepipixpic.ui.editor;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,21 +25,31 @@ public class ImageEditorActivity extends BaseActivity implements UCropFragmentCa
 
     UCropFragment ucrop;
 
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_editor);
 
-        Uri imageUri = (Uri)getIntent().getParcelableExtra("IMAGE");
+        dialog  = new ProgressDialog(this);
 
-        Uri res_url = Uri.fromFile(new File(imageUri.getPath()));
+        Uri imageUri;
+
+        if(getIntent().getStringExtra("TYPE").equals("CAMERA")) {
+            Uri temp = (Uri) getIntent().getParcelableExtra("IMAGE");
+            imageUri = Uri.fromFile(new File(temp.getPath()));
+        }
+        else {
+            imageUri = (Uri) getIntent().getParcelableExtra("IMAGE");
+        }
 
         UCrop.Options options = new UCrop.Options();
         options.setSaturationEnabled(Boolean.FALSE);
         options.setSharpnessEnabled(Boolean.FALSE);
 
         Uri destinationUri = new Uri.Builder().path(pixton.editImageDestination +  File.separator + imageUri.getPathSegments().get(imageUri.getPathSegments().size()-1) + ".jpg").build();
-        ucrop = UCrop.of(res_url, destinationUri)
+        ucrop = UCrop.of(imageUri, destinationUri)
                 .withAspectRatio(1,1)
                 .withMaxResultSize(1920,1920)
                 .withOptions(options)
@@ -63,6 +75,7 @@ public class ImageEditorActivity extends BaseActivity implements UCropFragmentCa
             onBackPressed();
         }
         else if(item.getItemId() == R.id.action_next) {
+            dialog.show();
             ucrop.cropAndSaveImage();
         }
         return super.onOptionsItemSelected(item);
@@ -76,6 +89,7 @@ public class ImageEditorActivity extends BaseActivity implements UCropFragmentCa
     @Override
     public void onCropFinish(UCropFragment.UCropResult uCropResult) {
         setResult(RESULT_OK, uCropResult.mResultData);
+        dialog.hide();
         finish();
     }
 }

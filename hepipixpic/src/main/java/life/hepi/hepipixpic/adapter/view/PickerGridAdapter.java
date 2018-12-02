@@ -70,7 +70,8 @@ public class PickerGridAdapter
                             Intent intent = new Intent();
                             intent.setClass(context, ImageEditorActivity.class);
                             intent.putExtra("IMAGE", image);
-                            ((Activity)context).startActivity(intent);
+                            intent.putExtra("TYPE","PICKER");
+                            ((Activity)context).startActivityForResult(intent, 123);
                         }
                     }
                 }

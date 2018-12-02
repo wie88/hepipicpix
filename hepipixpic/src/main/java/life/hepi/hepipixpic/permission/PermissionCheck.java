@@ -53,11 +53,28 @@ public class PermissionCheck {
             return true;
     }
 
+    public boolean CheckCameraPermission() {
+        Define define = new Define();
+        int cameraPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.CAMERA);
+        if(cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
+                    Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions((Activity) context,
+                        new String[]{Manifest.permission.CAMERA},
+                        define.CAMERA);
+            }
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
     public void showPermissionDialog() {
         Toast.makeText(context, "permission deny", Toast.LENGTH_SHORT).show();
     }
-
 
 
 }

@@ -146,7 +146,7 @@ public class Pixton {
             titleAlbumAllView = context.getResources().getString(R.string.str_all_view);
 
         if (titleActionBar == null)
-            titleActionBar = context.getResources().getString(R.string.album);
+            titleActionBar = context.getResources().getString(R.string.pick_image);
     }
 
     void setMenuTextColor() {
