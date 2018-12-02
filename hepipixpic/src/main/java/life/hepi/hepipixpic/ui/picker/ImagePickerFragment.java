@@ -1,7 +1,9 @@
 package life.hepi.hepipixpic.ui.picker;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import android.widget.TextView;
 import life.hepi.hepipixpic.BaseFragment;
 import life.hepi.hepipixpic.R;
 import life.hepi.hepipixpic.adapter.image.impl.GlideAdapter;
 import life.hepi.hepipixpic.adapter.view.PickerGridAdapter;
 import life.hepi.hepipixpic.bean.Album;
+import life.hepi.hepipixpic.define.Define;
 import life.hepi.hepipixpic.permission.PermissionCheck;
+import life.hepi.hepipixpic.ui.album.AlbumActivity;
 import life.hepi.hepipixpic.util.SquareFrameLayout;
 
 public class ImagePickerFragment extends BaseFragment {
@@ -32,6 +37,7 @@ public class ImagePickerFragment extends BaseFragment {
     private PickerGridAdapter adapter;
     private GridLayoutManager layoutManager;
     private ImagePickerViewModel viewModel;
+    private TextView albumText;
 
     public ImagePickerFragment() {
         // Required empty public constructor
@@ -58,6 +64,7 @@ public class ImagePickerFragment extends BaseFragment {
         }
 
         recyclerView = view.findViewById(R.id.recycler_picker_list);
+        albumText = view.findViewById(R.id.album);
 
         return view;
     }
@@ -86,6 +93,14 @@ public class ImagePickerFragment extends BaseFragment {
     private void initView() {
         layoutManager = new GridLayoutManager(getContext(), pixton.photoSpanCount, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+        albumText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getContext(), AlbumActivity.class);
+                startActivityForResult(intent, 897);
+            }
+        });
     }
 
     public void setAdapter(Uri[] result) {
@@ -115,4 +130,18 @@ public class ImagePickerFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 897:
+                if(resultCode == Activity.RESULT_OK) {
+                    album = data.getParcelableExtra(Define.BUNDLE_NAME.ALBUM.name());
+                    position = data.getIntExtra(Define.BUNDLE_NAME.POSITION.name(), -1);
+                    albumText.setText(album.bucketName);
+                    viewModel.displayImage(album.bucketId, pixton.isExceptGif);
+                }
+                break;
+        }
+    }
 }
